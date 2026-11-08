@@ -147,14 +147,16 @@ nav.main a:hover { color: var(--pine); }
 @media (max-width: 820px) { .meat { grid-template-columns: 1fr; } .meat img { aspect-ratio: 4 / 3; } }
 
 /* gallery */
-.gallery { display: grid; grid-template-columns: 1.3fr 1fr 1fr; grid-template-rows: auto auto; gap: 12px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); grid-auto-flow: dense; gap: 12px; }
 .gallery button { padding: 0; border: 0; background: none; cursor: zoom-in; position: relative; border-radius: var(--r); overflow: hidden; display: block; min-width: 0; }
-.gallery button:first-child { grid-row: span 2; }
-.gallery img { width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 4 / 3; transition: transform .4s ease; }
-.gallery button:first-child img { aspect-ratio: auto; min-height: 100%; }
+.gallery button.wide { grid-column: span 2; grid-row: span 2; aspect-ratio: 3 / 4; }
+.gallery figure { margin: 0; height: 100%; }
+.gallery img { width: 100%; height: 100%; object-fit: cover; display: block; aspect-ratio: 3 / 4; transition: transform .4s ease; }
+.gallery button.wide img { aspect-ratio: auto; position: absolute; inset: 0; }
 .gallery button:hover img { transform: scale(1.04); }
 .gallery figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 26px 12px 10px; font-size: .85rem; color: #fff; text-align: left; background: linear-gradient(transparent, rgba(0,0,0,.65)); }
-@media (max-width: 760px) { .gallery { grid-template-columns: 1fr 1fr; } .gallery button:first-child { grid-row: auto; grid-column: span 2; } .gallery button:first-child img { aspect-ratio: 4 / 3; } }
+@media (max-width: 480px) { .gallery { grid-template-columns: 1fr 1fr; gap: 8px; } }
+.gallery-more { display: flex; justify-content: center; margin-top: 20px; }
 dialog.lightbox { border: 0; padding: 0; background: transparent; max-width: min(92vw, 900px); max-height: 92vh; }
 dialog.lightbox::backdrop { background: rgba(8,14,10,.85); }
 dialog.lightbox img { max-width: 100%; max-height: 82vh; display: block; border-radius: var(--r); margin: 0 auto; }
@@ -345,14 +347,45 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
       <div class="section-head">
         <p class="eyebrow">Life on the farm</p>
         <h2 id="galleryH">Photos from the yard</h2>
+        <p class="lede">Animals, the vegetable garden, the pond and what comes out of the farm kitchen.</p>
+      </div>
+      <div class="filters" role="group" aria-label="Filter photos">
+        <button class="chip" type="button" data-gfilter="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-gfilter="animals" aria-pressed="false">Animals</button>
+        <button class="chip" type="button" data-gfilter="poultry" aria-pressed="false">Poultry &amp; eggs</button>
+        <button class="chip" type="button" data-gfilter="garden" aria-pressed="false">Garden &amp; harvest</button>
+        <button class="chip" type="button" data-gfilter="pond" aria-pressed="false">Pond</button>
+        <button class="chip" type="button" data-gfilter="food" aria-pressed="false">Meat &amp; food</button>
       </div>
       <div class="gallery" id="gallery-grid">
-        <button type="button" data-i="0"><figure style="margin:0;height:100%"><img src="images/herd.jpg" alt="Tagged goats in the afternoon sun" loading="lazy"><figcaption>The goat herd in the afternoon sun</figcaption></figure></button>
-        <button type="button" data-i="1"><figure style="margin:0"><img src="images/flock.jpg" alt="A mixed herd of goats spread across the hay yard under the trees" loading="lazy"><figcaption>Plenty of room under the trees</figcaption></figure></button>
-        <button type="button" data-i="2"><figure style="margin:0"><img src="images/kids.jpg" alt="Young black, white and brown goats by the shelter" loading="lazy"><figcaption>Young goats by the shelter</figcaption></figure></button>
-        <button type="button" data-i="3"><figure style="margin:0"><img src="images/yard.jpg" alt="Two goats and a hen in the yard beside the poultry coops" loading="lazy"><figcaption>Goats and hens share the yard</figcaption></figure></button>
-        <button type="button" data-i="4"><figure style="margin:0"><img src="images/meat.jpg" alt="Fresh bone-in meat in a steel bowl" loading="lazy"><figcaption>Fresh-cut meat</figcaption></figure></button>
+        <button type="button" class="wide" data-cat="animals"><figure><img src="images/herd.jpg" alt="Tagged goats in the afternoon sun" loading="lazy"><figcaption>The goat herd in the afternoon sun</figcaption></figure></button>
+        <button type="button" data-cat="animals"><figure><img src="images/bull.jpg" alt="A shaggy red bull with long horns standing on hay in the pen" loading="lazy"><figcaption>Our red bull</figcaption></figure></button>
+        <button type="button" data-cat="poultry"><figure><img src="images/ducks-geese.jpg" alt="White geese and black ducks walking across the green lawn" loading="lazy"><figcaption>Ducks and geese on the lawn</figcaption></figure></button>
+        <button type="button" data-cat="garden"><figure><img src="images/red-chilies.jpg" alt="A foil tray heaped with freshly picked red chilies" loading="lazy"><figcaption>A tray of red chilies</figcaption></figure></button>
+        <button type="button" data-cat="poultry"><figure><img src="images/hens-coop.jpg" alt="A large flock of brown laying hens inside the poultry house" loading="lazy"><figcaption>Laying hens in the poultry house</figcaption></figure></button>
+        <button type="button" data-cat="animals"><figure><img src="images/flock.jpg" alt="A mixed herd of goats spread across the hay yard under the trees" loading="lazy"><figcaption>Plenty of room under the trees</figcaption></figure></button>
+        <button type="button" data-cat="garden"><figure><img src="images/bottle-gourds.jpg" alt="Two large green bottle gourds on a kitchen counter" loading="lazy"><figcaption>Bottle gourds (lau) from the garden</figcaption></figure></button>
+        <button type="button" data-cat="animals"><figure><img src="images/cattle.jpg" alt="A black cow and a red bull standing in the hay by the fence" loading="lazy"><figcaption>Cattle in the pen</figcaption></figure></button>
+        <button type="button" data-cat="pond"><figure><img src="images/pond-bass.jpg" alt="A boy holding a largemouth bass beside the farm pond" loading="lazy"><figcaption>A bass from the pond</figcaption></figure></button>
+        <button type="button" data-cat="poultry"><figure><img src="images/brown-eggs.jpg" alt="A bucket full of fresh brown eggs" loading="lazy"><figcaption>Fresh brown eggs</figcaption></figure></button>
+        <button type="button" data-cat="animals"><figure><img src="images/kids.jpg" alt="Young black, white and brown goats by the shelter" loading="lazy"><figcaption>Young goats by the shelter</figcaption></figure></button>
+        <button type="button" data-cat="garden"><figure><img src="images/red-amaranth.jpg" alt="A bed of red and green amaranth leaves" loading="lazy"><figcaption>Red amaranth (lal shak)</figcaption></figure></button>
+        <button type="button" data-cat="animals"><figure><img src="images/goats-yard.jpg" alt="Goats of many colors gathered in the yard at golden hour" loading="lazy"><figcaption>Goats at golden hour</figcaption></figure></button>
+        <button type="button" data-cat="garden"><figure><img src="images/eggplant.jpg" alt="A glossy purple eggplant hanging from the plant" loading="lazy"><figcaption>Eggplant on the vine</figcaption></figure></button>
+        <button type="button" data-cat="poultry"><figure><img src="images/rooster.jpg" alt="A barred rooster with a red comb among the hens" loading="lazy"><figcaption>Barred rooster and hens</figcaption></figure></button>
+        <button type="button" data-cat="food"><figure><img src="images/fresh-meat-2.jpg" alt="A pot full of fresh-cut red meat" loading="lazy"><figcaption>Freshly cut meat</figcaption></figure></button>
+        <button type="button" data-cat="garden"><figure><img src="images/green-chilies.jpg" alt="Long green chilies growing on the plant" loading="lazy"><figcaption>Green chilies growing</figcaption></figure></button>
+        <button type="button" data-cat="animals"><figure><img src="images/goats-pen.jpg" alt="White and brown goats resting in the fenced pen" loading="lazy"><figcaption>Goats in the pen</figcaption></figure></button>
+        <button type="button" data-cat="pond"><figure><img src="images/bass-catch.jpg" alt="Close-up of a largemouth bass held up on the line" loading="lazy"><figcaption>Catch of the day</figcaption></figure></button>
+        <button type="button" data-cat="garden"><figure><img src="images/chili-harvest.jpg" alt="A green basket full of picked green and red chilies" loading="lazy"><figcaption>Chili harvest</figcaption></figure></button>
+        <button type="button" data-cat="animals"><figure><img src="images/young-goat.jpg" alt="A young brown and white goat standing in the yard with a hen behind" loading="lazy"><figcaption>A young goat in the yard</figcaption></figure></button>
+        <button type="button" data-cat="garden"><figure><img src="images/bean-vines.jpg" alt="Bean vines with purple flowers climbing over the garden" loading="lazy"><figcaption>Bean vines in flower</figcaption></figure></button>
+        <button type="button" data-cat="animals"><figure><img src="images/yard.jpg" alt="Two goats and a hen in the yard beside the poultry coops" loading="lazy"><figcaption>Goats and hens share the yard</figcaption></figure></button>
+        <button type="button" data-cat="food"><figure><img src="images/meat.jpg" alt="Fresh bone-in meat in a steel bowl" loading="lazy"><figcaption>Fresh-cut meat</figcaption></figure></button>
+        <button type="button" data-cat="garden"><figure><img src="images/garden-vines.jpg" alt="A wide patch of leafy vines with yellow flowers behind the house" loading="lazy"><figcaption>The vegetable patch at sunset</figcaption></figure></button>
+        <button type="button" data-cat="food"><figure><img src="images/homemade-snacks.jpg" alt="A tray of golden homemade fried snacks" loading="lazy"><figcaption>Homemade snacks</figcaption></figure></button>
       </div>
+      <div class="gallery-more"><button class="btn ghost" type="button" id="galleryMore">Show all photos</button></div>
     </div>
   </section>
   <dialog class="lightbox" id="lightbox" aria-label="Photo viewer">
@@ -521,8 +554,8 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
   });
 
   // filters
-  $$(".chip").forEach(c => c.addEventListener("click", () => {
-    $$(".chip").forEach(x => x.setAttribute("aria-pressed", x === c));
+  $$("[data-filter]").forEach(c => c.addEventListener("click", () => {
+    $$("[data-filter]").forEach(x => x.setAttribute("aria-pressed", x === c));
     const f = c.dataset.filter;
     $$(".pen").forEach(p => { p.hidden = !(f === "all" || p.dataset.group === f); });
   }));
@@ -586,10 +619,29 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: s
   });
 
   // gallery lightbox
-  const shots = $$("#gallery-grid button").map(b => ({ src: b.querySelector("img").getAttribute("src"), alt: b.querySelector("img").alt, cap: b.querySelector("figcaption").textContent }));
+  const gBtns = $$("#gallery-grid button"), moreBtn = $("#galleryMore");
+  const LIMIT = 12; let gFilter = "all", expanded = false;
+  function layoutGallery() {
+    const match = gBtns.filter(b => gFilter === "all" || b.dataset.cat === gFilter);
+    gBtns.forEach(b => { b.hidden = true; });
+    match.forEach((b, i) => { b.hidden = !expanded && gFilter === "all" && i >= LIMIT; });
+    moreBtn.parentElement.hidden = expanded || gFilter !== "all" || match.length <= LIMIT;
+    moreBtn.textContent = `Show all ${match.length} photos`;
+  }
+  $$("[data-gfilter]").forEach(c => c.addEventListener("click", () => {
+    $$("[data-gfilter]").forEach(x => x.setAttribute("aria-pressed", x === c));
+    gFilter = c.dataset.gfilter; layoutGallery();
+  }));
+  moreBtn.addEventListener("click", () => { expanded = true; layoutGallery(); });
+  layoutGallery();
+  let shots = [];
   const lb = $("#lightbox"); let cur = 0;
   const show = i => { cur = (i + shots.length) % shots.length; $("#lbImg").src = shots[cur].src; $("#lbImg").alt = shots[cur].alt; $("#lbCap").textContent = `${shots[cur].cap} · ${cur + 1} of ${shots.length}`; };
-  $$("#gallery-grid button").forEach(b => b.addEventListener("click", () => { show(+b.dataset.i); lb.showModal?.(); }));
+  gBtns.forEach(b => b.addEventListener("click", () => {
+    const vis = gBtns.filter(x => gFilter === "all" || x.dataset.cat === gFilter);
+    shots = vis.map(x => ({ src: x.querySelector("img").getAttribute("src"), alt: x.querySelector("img").alt, cap: x.querySelector("figcaption").textContent }));
+    show(vis.indexOf(b)); lb.showModal?.();
+  }));
   $("#lbPrev").addEventListener("click", () => show(cur - 1));
   $("#lbNext").addEventListener("click", () => show(cur + 1));
   $("#lbClose").addEventListener("click", () => lb.close());
